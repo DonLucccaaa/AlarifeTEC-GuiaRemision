@@ -1257,6 +1257,7 @@ void ShowScreen_QueryGuias() {
                         // Construir items_str para ComboBox
                         int total_len = 0;
                         for (int i = 0; i < resultados_count; i++) {
+                            // aprox 50 + longitud de cliente + longitud de fecha + algunos separadores
                             total_len += 50 + strlen(resultados[i].cliente) + strlen(resultados[i].fecha_emision) + 5;
                         }
                         total_len += resultados_count + 1;
@@ -1282,15 +1283,45 @@ void ShowScreen_QueryGuias() {
         }
     }
 
-    // Botón Descargar CSV (igual que antes)...
+    // Botón Descargar CSV
     if (GuiButton((Rectangle){20, 500, 150, 30}, "Descargar CSV")) {
         if (resultados_count <= 0) {
             strncpy(msg, "Primero ejecute la consulta", sizeof(msg)-1);
             msg[sizeof(msg)-1] = '\0';
         } else {
-            // Lógica de CSV...
-            log_auditoria(current_user, "Exportar CSV listado guías", "Transacc_guia_remision");
-            // ...
+            // Nombre de archivo basado en rango de fechas
+            char filename[128];
+            // Reemplaza caracteres no válidos si es necesario; aquí se usa directamente fecha_ini y fecha_fin
+            snprintf(filename, sizeof(filename), "guias_%s_%s.csv", fecha_ini, fecha_fin);
+            FILE *f = fopen(filename, "w");
+            if (!f) {
+                strncpy(msg, "Error al crear archivo CSV", sizeof(msg)-1);
+                msg[sizeof(msg)-1] = '\0';
+            } else {
+                // Escribir encabezado CSV
+                fprintf(f, "ID,Fecha Emision,Cliente,Transportista,Vehiculo,Tipo Envio,Partida,Llegada,Estado,Motivo\n");
+                // Escribir cada fila
+                for (int i = 0; i < resultados_count; i++) {
+                    GuiaInfo *g = &resultados[i];
+                    // Escribir valores, escapando con comillas si pudiera haber comas
+                    // Suponemos que los campos de texto no contienen comillas dobles; de lo contrario habría que escaparlas.
+                    fprintf(f, "%d,%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
+                            g->id_guia,
+                            g->fecha_emision,
+                            g->cliente,
+                            g->transportista,
+                            g->vehiculo,
+                            g->tipo_envio,
+                            g->punto_partida,
+                            g->punto_llegada,
+                            g->estado,
+                            g->motivo);
+                }
+                fclose(f);
+                snprintf(msg, sizeof(msg)-1, "CSV generado: %s", filename);
+                msg[sizeof(msg)-1] = '\0';
+                log_auditoria(current_user, "Exportar CSV listado guías", "Transacc_guia_remision");
+            }
         }
     }
 
@@ -1339,8 +1370,7 @@ void ShowScreen_QueryGuias() {
 
     // Mensaje
     if (msg[0] != '\0') {
-        //DrawText(msg, 20, comboY + 40, 14, RED);
-	DrawText(msg, 140, 550, 14, RED);
+        DrawText(msg, 140, 550, 14, RED);
     }
 
     // Mostrar resumen en pantalla (opcional)
