@@ -1,13 +1,12 @@
-// pdf_gen.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
 #include <sqlite3.h>
-#include <hpdf.h>     // Haru PDF
-#include "db.h"       // para tus funciones de carga
-#include "utils.h"    // validaciones, si necesario
+#include <hpdf.h>      
+#include "db.h"       
+#include "utils.h"   
 
 // Estructuras para almacenar cabecera y detalle despues de consulta:
 typedef struct {
@@ -46,7 +45,7 @@ typedef struct {
     char descripcion[256];
 } DetalleGuia;
 
-// Stub para cargar cabecera de guia. Implementar con SQLite.
+
 // Retorna true si carga con exito.
 bool cargar_cabecera_guia(int id_guia, CabeceraGuia *out) {
     sqlite3_stmt *stmt;
@@ -135,10 +134,7 @@ bool cargar_cabecera_guia(int id_guia, CabeceraGuia *out) {
     return ok;
 }
 
-// Stub para cargar detalles de guia. Implementar con SQLite.
-// Retorna true si carga con exito.
-// Asigna arreglo dinamico a *out_array y numero de elementos a *out_count.
-// Llamar free() en el arreglo despues de usar.
+
 bool cargar_detalles_guia(int id_guia, DetalleGuia **out_array, int *out_count) {
     sqlite3_stmt *stmt;
     const char *sql =
@@ -190,9 +186,8 @@ void error_handler(HPDF_STATUS error_no, HPDF_STATUS detail_no, void *user_data)
     // Segun diseno, se puede abortar o longjmp
 }
 
-// Helper para dibujar etiqueta y valor ASCII (sin acentos) alineados:
-// label y value son cadenas ASCII sin caracteres especiales.
-// x_label: X para etiqueta; x_value: X para valor; y: coordenada Y; font_bold/font_reg y tamaño.
+
+
 static void draw_label_value_ascii(HPDF_Page page,
                                    HPDF_Font font_bold, HPDF_Font font_reg,
                                    float x_label, float x_value, float y,
@@ -324,7 +319,7 @@ bool generate_pdf_guia(int id_guia) {
     // 5) Tabla de detalles con anchos ajustados para evitar solapes
     {
         // Ajuste de anchos de columna:
-        // Serie: 50, Corr: 60, Producto/Servicio: 200, Cant: 50, Valor Unit.: 70, Total: 70
+
         float col_w[] = {50, 60, 200, 50, 70, 70};
         float x = m;
         float top = y;

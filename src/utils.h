@@ -25,4 +25,4 @@ bool validar_fecha_yyyy_mm_dd(const char *fecha);   // Validar Fecha
 bool validar_licencia(const char *s);               // Validar si contiene una letra y 8 digitos
 bool validar_placa(const char *s);                  // Validar si contiene 6 caracteres
 int comparar_fechas_yyyy_mm_dd(const char *date1, const char *date2); // Comparar fecha de emisión e inicio
-#endif // UTILS_H
+#endif 

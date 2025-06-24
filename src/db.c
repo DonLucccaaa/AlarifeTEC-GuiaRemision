@@ -38,7 +38,7 @@ bool db_exec(const char *sql) {
 }
 
 bool db_init_schema() {
-    // Ajusta esquema según tu diseño; este es un ejemplo basado en tu código previo.
+
     const char *schema =
         "CREATE TABLE IF NOT EXISTS Mae_rol ("
             "id_rol INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -151,8 +151,8 @@ bool db_init_schema() {
 
     // Insertar usuario admin si no existe:
     // Necesitamos nombre único “admin”. También se exige campo correo en la tabla Mae_usuario:
-    // Decidimos usar correo “admin@local” o similar. Puede adaptarse.
-    // La contraseña en texto plano “admin” (o bien hacer hash si lo deseas).
+    // Decidimos usar correo “admin@local” o similar. 
+    // La contraseña en texto plano “admin” 
     // Usamos SELECT para saber si ya existe:
     {
         sqlite3_stmt *stmt;

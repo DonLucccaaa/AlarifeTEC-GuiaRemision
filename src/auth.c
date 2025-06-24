@@ -2,7 +2,7 @@
 #include "db.h"
 #include <string.h>
 
-// Define tu código de administrador. En producción, podría leerse de config o generarse dinámico.
+//CODIGO ADMINISTRADOR
 static const char *ADMIN_CODE = "ADMIN123";
 
 bool check_admin_code(const char *code) {

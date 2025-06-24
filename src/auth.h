@@ -10,4 +10,4 @@ bool login_check(const char *user, const char *pass, int *user_id, int *role_id)
 bool register_user(const char *user, const char *email, const char *pass, int role_code);
 bool check_admin_code(const char *code);
 
-#endif // AUTH_H
+#endif 

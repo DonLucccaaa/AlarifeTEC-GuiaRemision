@@ -35,11 +35,7 @@ bool db_add_detalle_guia(int id_empresa, int id_guia,
 // El caller deberá liberar cada (*out_labels)[i] y luego free(*out_labels).
 bool db_load_list(const char *query, char ***out_labels, int *out_count);
 
-// NUEVA: Carga lista con IDs y labels: para dropdowns que necesitan el ID asociado.
-// La consulta debe devolver dos columnas: primera INTEGER ID, segunda TEXT label.
-// El caller debe, tras uso:
-//   for (i=0; i<count; i++) free(labels[i]);
-//   free(labels); free(ids);
+
 bool db_load_list_with_ids(const char *query, int **out_ids, char ***out_labels, int *out_count);
 
 // Función para insertar una guía (cabecera). Retorna id_guia en out_id_guia.
@@ -63,11 +59,11 @@ bool db_add_guia(
 // Estructura para resultado consulta de guías
 typedef struct {
     int id_guia;
-    char fecha_emision[11+1];    // "YYYY-MM-DD"
+    char fecha_emision[11+1];    
     char punto_partida[128];
     char punto_llegada[128];
     char estado[32];
-    // Si necesitas más campos, añade aquí y ajusta en la implementación.
+
 } GuiaInfo;
 
 // Consulta guías en un rango de fechas y devuelve resultados en arreglo dinámico.
@@ -83,4 +79,4 @@ void cargar_transportistas(char ***out_labels, int **out_ids, int *out_count);
 void cargar_vehiculos(char ***out_labels, int **out_ids, int *out_count);
 void cargar_tipos_envio(char ***out_labels, int **out_ids, int *out_count);
 
-#endif // DB_H
+#endif 

@@ -30,19 +30,6 @@ int main(void) {
 
     // Inicializar ventana
     InitWindow(800, 600, "Guía de Remisión");
-
-
-    // Cargar fuente TTF desde disco (colocar el .ttf en tu proyecto, p.ej. "resources/MyFont.ttf")
-    //Font myFont = LoadFont("Roboto-Black.ttf");
-//    if (myFont.texture.id == 0) {
-        // No se cargó: maneja error o usa fuente por defecto
-        TraceLog(LOG_WARNING, "No se pudo cargar la fuente, se usará la predeterminada.");
-//    } else {
-        // Asignar la fuente a raygui
-//        GuiSetFont(myFont);
-        // Opcional: también puedes usar DrawTextEx con myFont directamente cuando dibujes textos propios:
-        // DrawTextEx(myFont, "Hola Mundo", (Vector2){100,100}, 20, 1, BLACK);
-	//  }
     
     SetTargetFPS(60);
 
@@ -54,13 +41,13 @@ int main(void) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        // Dibuja la pantalla actual (internamente hace switch según screen)
+        // Dibuja la pantalla actual
         DrawCurrentScreen();
 
         EndDrawing();
     }
 
-    // Liberar recursos y cerrar
+    // Liberar recursos 
     UnloadScreens();
     CloseWindow();
     db_close();

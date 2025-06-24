@@ -1,12 +1,12 @@
 // screens.c
 
-#include <stdlib.h>     // atoi, malloc/free
+#include <stdlib.h>     
 #include <string.h>
 #include <stdio.h>
-#include <sqlite3.h>    // sqlite3_last_insert_rowid
+#include <sqlite3.h>    
 #include "raylib.h"
 
-// Incluir implementación de raygui aquí (header-only):
+// Implementacion de raygui
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
@@ -18,13 +18,13 @@
 #include <limits.h>
 
 
-// Variable estática interna que guarda la pantalla actual
+
 static int screen = 0;
 static int current_user = 0;
 static int current_role = 0;
 static int current_session_id = 0;
 
-// Funciones para gestionar la pantalla actual
+
 void SetScreen(int s) {
     screen = s;
 }
@@ -32,7 +32,7 @@ int GetScreen(void) {
     return screen;
 }
 
-// Función que dibuja la pantalla según el valor de 'screen'
+// Función que dibuja la pantalla según el valor de screen
 void DrawCurrentScreen(void) {
     switch (screen) {
         case 0: ShowScreen_Login(); break;
@@ -48,12 +48,14 @@ void DrawCurrentScreen(void) {
     }
 }
 
-void InitScreens() {
-    // Si necesitas inicializar recursos compartidos de pantallas (texturas, fuentes, etc.)
+void InitScreens()
+{
+
 }
 
-void UnloadScreens() {
-    // Liberar recursos si aplica
+void UnloadScreens()
+{
+
 }
 
 // ------------------- Pantallas -------------------
@@ -92,7 +94,7 @@ void ShowScreen_Login() {
             editPass = false;
         }
     }
-    // Si está en edición, capturar caracteres
+
     if (editPass) {
         int key = GetCharPressed();
         while (key > 0) {
@@ -169,7 +171,6 @@ void ShowScreen_Register() {
 
     DrawText("Registro", 20, 20, 20, BLACK);
 
-    // Usuario: sólo letras y números permitidos? A menudo se permiten letras, dígitos, guiones. Aquí validamos nombre sin espacios y alfanumérico mínimo:
     GuiLabel((Rectangle){20, 60, 100, 20}, "Usuario:");
     if (GuiTextBox((Rectangle){130, 60, 200, 20}, user, 31, editUser)) editUser = !editUser;
 
@@ -214,12 +215,8 @@ void ShowScreen_Register() {
     // Selección de rol
     GuiLabel((Rectangle){20, 220, 100, 20}, "Rol:");
     const char *roleOptions[2] = {"Encargado","Consultor"};
-    // Si tu versión de raygui tiene GuiComboBox:
-    //if (GuiComboBox((Rectangle){130, 180, 200, 20}, roleOptions[role_sel], &role_sel, 2)) {
-        // Internamente maneja la apertura y selección
-    //}
-    // Si no, podrías usar GuiDropdownBox con &role_sel y un flag editRole:
-     static bool editRole = false;
+
+    static bool editRole = false;
     if (GuiDropdownBox((Rectangle){130, 220, 200, 20}, "Encargado\nConsultor", &role_sel, editRole)) {
          editRole = !editRole;
     }
@@ -339,7 +336,7 @@ void ShowScreen_AddCliente() {
     GuiLabel((Rectangle){20, 100, 100, 20}, "RUC:");
     if (GuiTextBox((Rectangle){130, 100, 200, 20}, ruc, 15, editRuc)) editRuc = !editRuc;
 
-    // Dirección: aquí es dirección web? Si es dirección fiscal física, no tiene formato www; 
+
     // según tu requerimiento mencionaste formato www.ejemplo.com:
     GuiLabel((Rectangle){20, 140, 100, 20}, "Dir:");
     if (GuiTextBox((Rectangle){130, 140, 400, 20}, dir, 127, editDir)) editDir = !editDir;
@@ -738,18 +735,18 @@ void ShowScreen_GuiaRemision() {
     if (GuiTextBox((Rectangle){150, 90, 100, 20}, fecha_inicio, 11, editFechaIni)) editFechaIni = !editFechaIni;
     DrawText("(YYYY-MM-DD)", 260, 90, 12, DARKGRAY);
 
-    // --- Dropdown Layout (Labels Above, All Four Horizontally) ---
-    const int labelHeight = 20;
-    const int dropdownWidth = 150; // Width of each dropdown box
-    const int controlHeight = 20;  // Height of each dropdown box
-    const int verticalGapBetweenLabelAndDropdown = 5; // Gap between label and its dropdown
-    const int horizontalGroupSpacing = 30; // Space between each label-dropdown group
-    const int dropdownRowY = 130; // Y position for the start of the dropdown groups
 
-    // Calculate total height for one label-dropdown group (used for yBase)
+    const int labelHeight = 20;
+    const int dropdownWidth = 150; 
+    const int controlHeight = 20;  
+    const int verticalGapBetweenLabelAndDropdown = 5; 
+    const int horizontalGroupSpacing = 30; 
+    const int dropdownRowY = 130; 
+
+
     const int dropdownGroupTotalHeight = labelHeight + verticalGapBetweenLabelAndDropdown + controlHeight;
 
-    int currentX = 20; // Starting X position for the first group
+    int currentX = 20; 
 
     // Cliente Group
     GuiLabel((Rectangle){currentX, dropdownRowY, dropdownWidth, labelHeight}, "Cliente:");
@@ -826,22 +823,6 @@ void ShowScreen_GuiaRemision() {
     GuiLabel((Rectangle){20, yBase + 4*verticalSpacingInputs, 100, controlHeight}, "Descripción:");
     if (GuiTextBox((Rectangle){150, yBase + 4*verticalSpacingInputs, 400, controlHeight}, descripcion, 255, editDesc)) editDesc = !editDesc;
 
-    // ---------- Campos para nuevo detalle ----------
-/*    GuiLabel((Rectangle){20, yBase + 5*verticalSpacingInputs, 100, controlHeight}, "Producto:");
-    if (GuiTextBox((Rectangle){130, yBase + 5*verticalSpacingInputs, 200, controlHeight}, producto_tmp, 127, editProd)) editProd = !editProd;
-
-    GuiLabel((Rectangle){20, yBase + 6*verticalSpacingInputs, 100, controlHeight}, "Cantidad:");
-    if (GuiTextBox((Rectangle){130, yBase + 6*verticalSpacingInputs, 100, controlHeight}, cantidad_tmp, 15, editCant)) editCant = !editCant;
-
-    GuiLabel((Rectangle){250, yBase + 6*verticalSpacingInputs, 100, controlHeight}, "Valor Unit.:");
-    if (GuiTextBox((Rectangle){350, yBase + 6*verticalSpacingInputs, 100, controlHeight}, valor_tmp, 31, editVal)) editVal = !editVal;
-
-    GuiLabel((Rectangle){20, yBase + 7*verticalSpacingInputs, 100, controlHeight}, "Desc. Detalle:");
-    if (GuiTextBox((Rectangle){130, yBase + 7*verticalSpacingInputs, 300, controlHeight}, descripcion_tmp, 255, editDescTmp)) editDescTmp = !editDescTmp;
-
-    // Botón Agregar Detalle
-    if (GuiButton((Rectangle){20, yBase + 8*verticalSpacingInputs, 120, 30}, "Agregar Detalle")) {*/
-    // ---------- Campos para nuevo detalle en una sola línea ----------
 
     // Producto:
     GuiLabel((Rectangle){20, yBase + 5*verticalSpacingInputs, 60, controlHeight}, "Producto:");
@@ -1291,7 +1272,7 @@ void ShowScreen_QueryGuias() {
         } else {
             // Nombre de archivo basado en rango de fechas
             char filename[128];
-            // Reemplaza caracteres no válidos si es necesario; aquí se usa directamente fecha_ini y fecha_fin
+
             snprintf(filename, sizeof(filename), "guias_%s_%s.csv", fecha_ini, fecha_fin);
             FILE *f = fopen(filename, "w");
             if (!f) {
@@ -1304,7 +1285,7 @@ void ShowScreen_QueryGuias() {
                 for (int i = 0; i < resultados_count; i++) {
                     GuiaInfo *g = &resultados[i];
                     // Escribir valores, escapando con comillas si pudiera haber comas
-                    // Suponemos que los campos de texto no contienen comillas dobles; de lo contrario habría que escaparlas.
+
                     fprintf(f, "%d,%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
                             g->id_guia,
                             g->fecha_emision,

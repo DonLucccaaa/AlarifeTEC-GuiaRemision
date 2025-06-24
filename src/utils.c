@@ -141,7 +141,6 @@ bool validar_url(const char *url, int max_len) {
     }
     // Contiene al menos un '.'
     if (!strchr(url, '.')) return false;
-    // Podrías añadir comprobación de prefijo http(s):// o www., pero opcional:
     // if (!(strncmp(url, "http://", 7) == 0 || strncmp(url, "https://", 8) == 0 || strncmp(url, "www.", 4) == 0)) return false;
     return true;
 }
